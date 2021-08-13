@@ -31,12 +31,12 @@ let initList = hotelList => {
     let hotelListElement = document.getElementById('hotel-list');
     hotelList.forEach(hotel => {
         let hotelLinkElement = document.createElement("a");
-        hotelLinkElement.setAttribute("href", `detail.html?id=` + hotel.singleCardContent.cardLink.route.typedParams.geoId);
+        hotelLinkElement.setAttribute("href", `detail.html?id=` + hotel.singleCardContent.cardLink.route.typedParams.contentId);
         hotelListElement.appendChild(hotelLinkElement);
         let hotelContainer = document.createElement("div");
         hotelContainer.setAttribute("class", "hotel");
         hotelLinkElement.appendChild(hotelContainer);
-        let hotelImage = "<img src=" + hotel.singleCardContent.descriptiveText.route.url + " alt='" + hotel.singleCardContent.cardTitle.string + "' class='hotel-image-small'/>";
+        let hotelImage = "<img src=" + hotel.singleCardContent.cardLink.route.url + " alt='" + hotel.singleCardContent.cardTitle.string + "' class='hotel-image-small'/>";
         hotelContainer.innerHTML = hotelImage;
         let hotelDetailsContainer = document.createElement("div");
         hotelDetailsContainer.setAttribute("class", "hotel-name-rating");
@@ -72,11 +72,12 @@ let fetchHotelListAPI = () => {
             hotelList = result.AppPresentation_queryAppSearch.sections.filter(item => {
                 if(item.singleCardContent)
                 {
-                     return item.singleCardContent
+                    if(item.singleCardContent.bubbleRating) return item.singleCardContent;
                 }
             });
+            // var trackingKey= JSON.parse(hotelList.trackingKey);
             // hotelList.forEach(item => {
-            //     locations.push([item.result_object.name + "<br><a href=\"detail.html?id=" + item.result_object.location_id + "\">Book Hotel</a>", item.result_object.latitude, item.result_object.longitude]);
+            //     locations.push([item.singleCardContent.cardTitle.string + "<br><a href=\"detail.html?id=" + trackingKey.lid + "\">Book Hotel</a>", 0, 0]);
             // });
             initList(hotelList);
             //initMap(locations);

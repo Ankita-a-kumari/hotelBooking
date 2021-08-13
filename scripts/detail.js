@@ -1,7 +1,7 @@
 let urlParams = new URLSearchParams(window.location.search);
-const API_URL = "https://tripadvisor1.p.rapidapi.com/";
-const tripAdvisorHost = "tripadvisor1.p.rapidapi.com";
-const tripAdvisorKey = "<YOUR_API_KEY>";
+const API_URL = "https://travel-advisor.p.rapidapi.com/";
+const tripAdvisorHost = "travel-advisor.p.rapidapi.com";
+const tripAdvisorKey = "9491a4773amshc7a7d06627eeadcp19898bjsn95d462e4eef1";
 const PRICE_PER_ROOM = 1000;
 
 /* Function to update the Price field in the booking form, according to the dates, number of adults and total price */
@@ -28,11 +28,22 @@ let updatePrice = () => {
 /* This function will fetch the details of the hotel from the API and populate the web page accordingly. */
 let fetchHotelDetailAPI = () => {
     let xhr = new XMLHttpRequest();
+    const data = JSON.stringify({
+        "contentId": urlParams.get("id"),
+        "checkIn":"2021-07-03" ,
+        "checkOut": "2021-07-05",
+        "rooms": [
+            {
+                "adults": 1,
+                "childrenAges": [2]
+            },
+        ]
+    });
 
     xhr.addEventListener("readystatechange", function () {
         if (this.readyState === this.DONE) {
             //parse the JSON data of the hotel
-            let result = JSON.parse(this.responseText).data[0];
+            let result = JSON.parse(this.responseText).data.AppPresentation_queryAppDetailV2[0];
             // populate the name of the hotel by obtaining it from the API
             document.getElementById("hotel-name").innerText = result.name;
             // populate the amenities of the hotel by obtaining it from the API
@@ -55,11 +66,13 @@ let fetchHotelDetailAPI = () => {
         }
     });
 
-    xhr.open("GET", API_URL + "hotels/get-details?lang=en_US&location_id=" + urlParams.get('id'));
-    xhr.setRequestHeader("x-rapidapi-host", tripAdvisorHost);
-    xhr.setRequestHeader("x-rapidapi-key", tripAdvisorKey);
+    
+    xhr.open("POST", API_URL + "hotels/v2/get-details?currency=USD&units=km&lang=en_US");
+xhr.setRequestHeader("content-type", "application/json");
+xhr.setRequestHeader("x-rapidapi-key", tripAdvisorKey);
+xhr.setRequestHeader("x-rapidapi-host", tripAdvisorHost);
 
-    xhr.send();
+    xhr.send(data);
 }
 
 /* Fetch the API data for hotel photos, and add it to the bootstrap carousel */
