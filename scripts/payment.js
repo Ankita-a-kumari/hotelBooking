@@ -1,7 +1,7 @@
 let urlParams = new URLSearchParams(window.location.search);
-const API_URL = "https://tripadvisor1.p.rapidapi.com/";
-const tripAdvisorHost = "tripadvisor1.p.rapidapi.com";
-const tripAdvisorKey = "<YOUR_API_KEY>";
+const API_URL = "https://travel-advisor.p.rapidapi.com/";
+const tripAdvisorHost = "travel-advisor.p.rapidapi.com";
+const tripAdvisorKey = "9491a4773amshc7a7d06627eeadcp19898bjsn95d462e4eef1";
 
 /* Fetch the API data for hotel details, and price calculation, and finally create all the text dynamically */
 let fetchAPI = () => {
