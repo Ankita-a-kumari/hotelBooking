@@ -43,7 +43,7 @@ let fetchHotelDetailAPI = () => {
     xhr.addEventListener("readystatechange", function () {
         if (this.readyState === this.DONE) {
             //parse the JSON data of the hotel
-            let result = JSON.parse(this.responseText).data.AppPresentation_queryAppDetailV2[0];
+            let result = JSON.parse(this.responseText).data[0];
             // populate the name of the hotel by obtaining it from the API
             document.getElementById("hotel-name").innerText = result.name;
             // populate the amenities of the hotel by obtaining it from the API
@@ -67,12 +67,12 @@ let fetchHotelDetailAPI = () => {
     });
 
     
-    xhr.open("POST", API_URL + "hotels/v2/get-details?currency=USD&units=km&lang=en_US");
+    xhr.open("GET", API_URL + "hotels/get-details?currency=USD&units=km&lang=en_US&location_id=" + urlParams.get("id"));
 xhr.setRequestHeader("content-type", "application/json");
 xhr.setRequestHeader("x-rapidapi-key", tripAdvisorKey);
 xhr.setRequestHeader("x-rapidapi-host", tripAdvisorHost);
 
-    xhr.send(data);
+    xhr.send();
 }
 
 /* Fetch the API data for hotel photos, and add it to the bootstrap carousel */
